@@ -1,60 +1,45 @@
-# Kontrol Relay Arduino dengan Gestur Tangan
 
-Proyek ini memungkinkan pengguna untuk mengontrol sebuah relay yang terhubung ke Arduino menggunakan gestur tangan yang dideteksi melalui kamera webcam. Aplikasi utama ditulis dalam Python dan menggunakan OpenCV dan MediaPipe untuk pemrosesan gambar, sementara Arduino menjalankan kode untuk menerima perintah melalui komunikasi serial.
+# Aplikasi Handpose
 
-## Cara Kerja
+Aplikasi deteksi gestur tangan (handpose) yang dibuat dengan Python, OpenCV, dan MediaPipe. Aplikasi ini mampu mengenali berbagai gestur tangan secara real-time melalui webcam.
 
-1.  **Aplikasi Python (`gui.py`)**: 
-    -   Saat dijalankan, aplikasi akan menampilkan jendela untuk memilih port serial tempat Arduino terhubung.
-    -   Setelah port dipilih, aplikasi akan mengaktifkan kamera webcam.
-    -   Menggunakan pustaka `mediapipe`, aplikasi secara terus-menerus mendeteksi posisi tangan dalam frame video.
-    -   Aplikasi ini secara spesifik mencari dua jenis gestur:
-        -   **Gestur "V" (2 Jari)**: Ketika jari telunjuk dan jari tengah terangkat, aplikasi mengirimkan string `"ON"` melalui koneksi serial ke Arduino.
-        -   **Gestur 3 Jari**: Ketika jari telunjuk, tengah, dan manis terangkat, aplikasi mengirimkan string `"OFF"` melalui koneksi serial.
+## ✨ Developer
 
-2.  **Kode Arduino (`smart_coding.ino`)**:
-    -   Kode ini diunggah ke papan Arduino.
-    -   Arduino terus-menerus mendengarkan data yang masuk pada port serial.
-    -   Ketika menerima string `"ON"`, Arduino akan mengaktifkan `RELAY_D7` (terhubung ke pin digital 7) dengan mengaturnya ke level `HIGH`.
-    -   Ketika menerima string `"OFF"`, Arduino akan menonaktifkan `RELAY_D7` dengan mengaturnya ke level `LOW`.
-    -   Kode ini juga berisi logika untuk mengontrol relay lain berdasarkan input dari sensor suhu (NTC), air, dan cahaya (CDS), tetapi kontrol utama dari Python ditujukan untuk `RELAY_D7`.
+Aplikasi ini dikembangkan oleh **izhardevelop** dari tim **Daru Bot**.
 
-## File dalam Proyek
+[![Statistik GitHub izhardevelops](https://github-readme-stats.vercel.app/api?username=izhardevelop&show_icons=true&theme=radical)](https://github.com/izhardevelop)
 
--   `gui.py`: Aplikasi utama berbasis Python dengan antarmuka grafis (GUI) untuk pemilihan port dan deteksi gestur.
--   `smart_coding.ino`: Sketch Arduino untuk menerima perintah serial dan mengontrol beberapa relay.
--   `handpose.py`: Versi awal dari skrip deteksi tangan, yang logikanya sekarang telah diintegrasikan dan disempurnakan di dalam `gui.py`.
--   `rev1.py`: File revisi atau cadangan, tidak digunakan dalam alur kerja utama.
+Kunjungi profil GitHub: [https://github.com/izhardevelop](https://github.com/izhardevelop)
 
-## Prasyarat
+---
 
-### Perangkat Keras
--   Papan Arduino (misalnya, Arduino Uno).
--   Modul Relay.
--   Webcam.
--   Kabel jumper.
+## Fitur
 
-### Perangkat Lunak
--   Python 3.
--   Pustaka Python: `opencv-python`, `mediapipe`, `pyserial`, `tkinter`.
--   Arduino IDE.
+- Deteksi 1 & 2 tangan secara bersamaan.
+- Pengenalan gestur:
+  - **Satu Tangan:** 1-5 Jari, Pose Kepal, Pose OK.
+  - **Dua Tangan:** Pose Hati (Love), Pose Lingkaran Besar.
+- Estimasi jarak tangan dari kamera.
+- Tampilan antarmuka minimalis dengan panel informasi.
+- Kompatibilitas CPU/GPU otomatis yang ditangani oleh MediaPipe.
+- Deteksi kamera otomatis untuk kompabilitas di berbagai perangkat.
+
+## Instalasi
+
+1.  Pastikan Anda memiliki **Python 3.7+**.
+2.  Buka terminal atau Command Prompt.
+3.  Install semua library yang dibutuhkan dengan perintah berikut:
+
+    ```bash
+    pip install opencv-python mediapipe numpy
+    ```
 
 ## Cara Menjalankan
 
-1.  **Setup Arduino**:
-    -   Buka file `smart_coding.ino` di Arduino IDE.
-    -   Hubungkan papan Arduino ke komputer Anda.
-    -   Pilih Board dan Port yang benar dari menu Tools.
-    -   Unggah (upload) sketch ke Arduino.
+Setelah instalasi selesai, jalankan aplikasi dengan perintah:
 
-2.  **Jalankan Aplikasi Python**:
-    -   Pastikan semua pustaka Python yang diperlukan telah terinstal.
-    -   Jalankan file `gui.py`.
-    -   Sebuah jendela akan muncul. Pilih port COM tempat Arduino Anda terhubung dari menu dropdown.
-    -   Klik tombol "Confirm and Start".
-    -   Jendela kamera akan terbuka. Arahkan tangan Anda ke kamera untuk melakukan gestur.
+```bash
+python app_handpose.py
+```
 
-3.  **Kontrol Relay**:
-    -   Tunjukkan **gestur 'V' (2 jari)** untuk menyalakan relay.
-    -   Tunjukkan **gestur 3 jari** untuk mematikan relay.
-    -   Untuk keluar dari program, tekan tombol 'q' pada jendela kamera.
+Aplikasi akan otomatis mencari webcam yang aktif. Arahkan tangan Anda ke kamera untuk memulai deteksi. Tekan tombol **'q'** untuk keluar.
